@@ -19,9 +19,9 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   // Grey studio backdrop (same as the reference photo background)
   const bg = ctx.createLinearGradient(0, 0, SIZE, SIZE);
-  bg.addColorStop(0, "#262626");
-  bg.addColorStop(0.5, "#202020");
-  bg.addColorStop(1, "#1a1a1a");
+  bg.addColorStop(0, "#2a2a2a");
+  bg.addColorStop(0.55, "#242424");
+  bg.addColorStop(1, "#1f1f1f");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, SIZE, SIZE);
 
@@ -66,11 +66,10 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
   ctx.translate(c, c);
   ctx.fillStyle = ink;
   for (let i = 0; i < 60; i++) {
-    const isFive = i % 5 === 0;
     ctx.save();
     ctx.rotate((i / 60) * Math.PI * 2);
-    const len = isFive ? 0.075 * R : 0.06 * R;
-    const w = isFive ? 0.022 * R : 0.016 * R;
+    const len = 0.062 * R;
+    const w = 0.015 * R;
     ctx.fillRect(-w / 2, -0.985 * R, w, len);
     ctx.restore();
   }
