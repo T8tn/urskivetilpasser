@@ -159,9 +159,10 @@ function Configurator() {
         {/* Canvas */}
         <section className="flex flex-1 items-center justify-center bg-stage p-8">
           <div
-            className="relative aspect-square w-full max-w-[520px] overflow-hidden rounded-full shadow-[0_0_40px_rgba(0,0,0,0.8)]"
+            className="relative aspect-square w-full max-w-[520px] overflow-hidden rounded-lg"
             style={{ width: size, height: size }}
           >
+
             <canvas
               ref={canvasRef}
               width={DIAL_SIZE}
