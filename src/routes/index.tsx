@@ -42,11 +42,15 @@ export const Route = createFileRoute("/")({
 function Configurator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
+  const originalFileRef = useRef<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const baseRef = useRef<HTMLImageElement | null>(null);
   const indexRef = useRef<HTMLImageElement | null>(null);
   const indexDarkRef = useRef<HTMLImageElement | null>(null);
 
+  const [device, setDevice] = useState<"pc" | "mobil">(
+    typeof window !== "undefined" && window.innerWidth < 768 ? "mobil" : "pc",
+  );
   const [whiteDial, setWhiteDial] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
@@ -55,6 +59,9 @@ function Configurator() {
   const [hasImage, setHasImage] = useState(false);
   const [sending, setSending] = useState(false);
   const [layersReady, setLayersReady] = useState(0);
+
+  const maxStage = device === "mobil" ? 340 : 520;
+  const stageSize = Math.min(size, maxStage);
 
   const render = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
