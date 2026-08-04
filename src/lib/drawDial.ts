@@ -3,8 +3,10 @@ export type DialOptions = {
   image: HTMLImageElement | null;
   /** Base dial photo (black disc with date window + center hole). */
   baseImage?: HTMLImageElement | null;
-  /** Index/marker overlay (white markers on black background). */
+  /** Index/marker overlay (transparent PNG, light markers). */
   indexImage?: HTMLImageElement | null;
+  /** Dark variant of the index overlay, used on a white dial. */
+  indexImageDark?: HTMLImageElement | null;
   rotation: number; // degrees
   zoom: number; // scale multiplier
   offsetX: number; // -1..1 relative to size
