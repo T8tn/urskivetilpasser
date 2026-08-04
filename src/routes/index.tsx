@@ -14,8 +14,8 @@ import dialBaseAsset from "@/assets/dial-base.jpg.asset.json";
 import dialIndexAsset from "@/assets/index-white.png.asset.json";
 import dialIndexDarkAsset from "@/assets/index-black.png.asset.json";
 
-// Sett inn din egen e-postadresse for å motta innsendte design.
-const SUBMIT_EMAIL = "";
+// Mottaker for innsendte design.
+const SUBMIT_EMAIL = "kristofferurdal19a@gmail.com";
 
 export const Route = createFileRoute("/")({
   head: () => ({
