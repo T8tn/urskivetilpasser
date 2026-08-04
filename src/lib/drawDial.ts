@@ -42,6 +42,8 @@ function drawCover(
 export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
   const c = SIZE / 2;
 
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
   ctx.clearRect(0, 0, SIZE, SIZE);
 
   // 1. Grey studio backdrop
