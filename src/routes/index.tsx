@@ -44,6 +44,7 @@ function Configurator() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const baseRef = useRef<HTMLImageElement | null>(null);
   const indexRef = useRef<HTMLImageElement | null>(null);
+  const indexDarkRef = useRef<HTMLImageElement | null>(null);
 
   const [whiteDial, setWhiteDial] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -62,6 +63,7 @@ function Configurator() {
       image: imageRef.current,
       baseImage: baseRef.current,
       indexImage: indexRef.current,
+      indexImageDark: indexDarkRef.current,
       rotation,
       zoom,
       offsetX: offset.x,
@@ -82,6 +84,7 @@ function Configurator() {
     };
     load(dialBaseAsset.url, baseRef);
     load(dialIndexAsset.url, indexRef);
+    load(dialIndexDarkAsset.url, indexDarkRef);
   }, []);
 
   useEffect(() => {
