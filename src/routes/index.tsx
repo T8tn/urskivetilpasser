@@ -11,7 +11,8 @@ import { Slider } from "@/components/ui/slider";
 import { Download, RotateCcw, Upload } from "lucide-react";
 import { DIAL_SIZE, drawDial } from "@/lib/drawDial";
 import dialBaseAsset from "@/assets/dial-base.jpg.asset.json";
-import dialIndexAsset from "@/assets/dial-index.jpg.asset.json";
+import dialIndexAsset from "@/assets/index-white.png.asset.json";
+import dialIndexDarkAsset from "@/assets/index-black.png.asset.json";
 
 // Sett inn din egen e-postadresse for å motta innsendte design.
 const SUBMIT_EMAIL = "";
