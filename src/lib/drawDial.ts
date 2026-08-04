@@ -13,9 +13,9 @@ export type DialOptions = {
   offsetY: number;
 };
 
-const SIZE = 1000;
+const SIZE = 2400;
 /** Radius of the dial disc inside the square canvas (matches reference image). */
-const R = 450;
+const R = 0.45 * SIZE;
 
 /** Draw an image "cover" style into a square box centered at (cx, cy). */
 function drawCover(
@@ -42,6 +42,8 @@ function drawCover(
 export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
   const c = SIZE / 2;
 
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
   ctx.clearRect(0, 0, SIZE, SIZE);
 
   // 1. Grey studio backdrop
@@ -97,7 +99,8 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   // 5. Index overlay — transparent PNG, markers scaled so the minute track
   // sits just inside the dial edge exactly like the reference dial.
-  const overlay = o.whiteDial ? (o.indexImageDark ?? o.indexImage) : o.indexImage;
+  // Index-laget er alltid identisk (samme farge) uansett skivefarge.
+  const overlay = o.indexImage ?? o.indexImageDark;
   if (overlay) {
     ctx.save();
     ctx.beginPath();
