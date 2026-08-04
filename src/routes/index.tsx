@@ -41,6 +41,8 @@ function Configurator() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const baseRef = useRef<HTMLImageElement | null>(null);
+  const indexRef = useRef<HTMLImageElement | null>(null);
 
   const [whiteDial, setWhiteDial] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -49,6 +51,7 @@ function Configurator() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [hasImage, setHasImage] = useState(false);
   const [sending, setSending] = useState(false);
+  const [layersReady, setLayersReady] = useState(0);
 
   const render = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -56,12 +59,29 @@ function Configurator() {
     drawDial(ctx, {
       whiteDial,
       image: imageRef.current,
+      baseImage: baseRef.current,
+      indexImage: indexRef.current,
       rotation,
       zoom,
       offsetX: offset.x,
       offsetY: offset.y,
     });
-  }, [whiteDial, rotation, zoom, offset]);
+  }, [whiteDial, rotation, zoom, offset, layersReady]);
+
+  // Load the dial layers (base skive + index overlay) once
+  useEffect(() => {
+    const load = (src: string, ref: React.MutableRefObject<HTMLImageElement | null>) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        ref.current = img;
+        setLayersReady((n) => n + 1);
+      };
+      img.src = src;
+    };
+    load(dialBaseAsset.url, baseRef);
+    load(dialIndexAsset.url, indexRef);
+  }, []);
 
   useEffect(() => {
     render();
