@@ -93,16 +93,16 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   ctx.restore();
 
-  // 5. Index overlay (black background of the source is dropped via "screen")
-  if (o.indexImage) {
+  // 5. Index overlay — transparent PNG, markers scaled so the minute track
+  // sits just inside the dial edge exactly like the reference dial.
+  const overlay = o.whiteDial ? (o.indexImageDark ?? o.indexImage) : o.indexImage;
+  if (overlay) {
     ctx.save();
     ctx.beginPath();
     ctx.arc(c, c, R, 0, Math.PI * 2);
     ctx.clip();
-    ctx.globalCompositeOperation = o.whiteDial ? "multiply" : "screen";
-    // slightly inset so the edge markers stay fully inside the disc
-    const s = R * 0.90;
-    ctx.drawImage(o.indexImage, c - s, c - s, s * 2, s * 2);
+    const s = R * 1.082;
+    ctx.drawImage(overlay, c - s, c - s, s * 2, s * 2);
     ctx.restore();
   }
 }
