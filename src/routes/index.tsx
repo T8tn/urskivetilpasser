@@ -300,7 +300,7 @@ function Configurator() {
             min={240}
             max={maxStage}
             step={10}
-            current={size}
+            current={stageSize}
             onChange={setSize}
           />
 
