@@ -100,8 +100,9 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
     ctx.arc(c, c, R, 0, Math.PI * 2);
     ctx.clip();
     ctx.globalCompositeOperation = o.whiteDial ? "multiply" : "screen";
-    // stretched to the disc so every marker stays on the ring
-    ctx.drawImage(o.indexImage, c - R, c - R, R * 2, R * 2);
+    // slightly inset so the edge markers stay fully inside the disc
+    const s = R * 0.93;
+    ctx.drawImage(o.indexImage, c - s, c - s, s * 2, s * 2);
     ctx.restore();
   }
 }
