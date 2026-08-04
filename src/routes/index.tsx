@@ -194,16 +194,31 @@ function Configurator() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background p-5">
+    <main className="flex min-h-screen items-start justify-center bg-background p-3 sm:items-center sm:p-5">
       <Toaster />
       <div className="flex w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl md:flex-row">
         {/* Canvas */}
-        <section className="flex flex-1 items-center justify-center bg-stage p-8">
+        <section className="flex flex-1 flex-col items-center justify-center gap-4 bg-stage p-4 sm:p-8">
+          <div className="grid w-full max-w-[520px] grid-cols-2 gap-2 rounded-xl border border-border bg-card/60 p-1">
+            {(["pc", "mobil"] as const).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setDevice(d)}
+                className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  device === d
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent"
+                }`}
+              >
+                {d === "pc" ? "Optimalisert for PC" : "Optimalisert for mobil"}
+              </button>
+            ))}
+          </div>
           <div
-            className="relative aspect-square w-full max-w-[520px] overflow-hidden rounded-lg"
-            style={{ width: size, height: size }}
+            className="relative aspect-square w-full overflow-hidden rounded-lg"
+            style={{ maxWidth: stageSize }}
           >
-
             <canvas
               ref={canvasRef}
               width={DIAL_SIZE}
@@ -212,17 +227,18 @@ function Configurator() {
               onPointerMove={onPointerMove}
               onPointerUp={endDrag}
               onPointerCancel={endDrag}
+              style={{ touchAction: "none" }}
               className={`block h-full w-full ${hasImage ? "cursor-grab active:cursor-grabbing" : ""}`}
             />
           </div>
         </section>
 
         {/* Controls */}
-        <section className="flex w-full max-h-[90vh] flex-col gap-5 overflow-y-auto border-border p-8 md:max-w-[460px] md:border-l">
+        <section className="flex w-full flex-col gap-5 overflow-y-auto border-border p-5 sm:p-8 md:max-h-[90vh] md:max-w-[460px] md:border-l">
           <header>
-            <h1 className="text-2xl font-semibold tracking-tight">Urskive Konfigurator</h1>
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">Skive Atelier</h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Tilpass din unike klokke i sanntid.
+              Tilpass din unike urskive i sanntid.
             </p>
           </header>
 
@@ -232,8 +248,9 @@ function Configurator() {
               onCheckedChange={(v) => setWhiteDial(v === true)}
               aria-label="Hvit urskive"
             />
-            <span className="text-sm">Hvit urskive (sorte punktmarkeringer)</span>
+            <span className="text-sm">Hvit urskive</span>
           </label>
+
 
           <div className="flex flex-col gap-2">
             <Label>Bakgrunnsbilde for urskive</Label>
