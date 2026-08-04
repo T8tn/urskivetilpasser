@@ -13,9 +13,9 @@ export type DialOptions = {
   offsetY: number;
 };
 
-const SIZE = 1000;
+const SIZE = 2400;
 /** Radius of the dial disc inside the square canvas (matches reference image). */
-const R = 450;
+const R = 0.45 * SIZE;
 
 /** Draw an image "cover" style into a square box centered at (cx, cy). */
 function drawCover(
