@@ -101,6 +101,7 @@ function Configurator() {
 
   const onFile = (file?: File) => {
     if (!file) return;
+    originalFileRef.current = file;
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => {
@@ -117,6 +118,7 @@ function Configurator() {
 
   const resetImage = () => {
     imageRef.current = null;
+    originalFileRef.current = null;
     setHasImage(false);
     setRotation(0);
     setZoom(1);
