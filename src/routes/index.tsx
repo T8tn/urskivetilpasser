@@ -169,7 +169,12 @@ function Configurator() {
     try {
       const form = new FormData(e.currentTarget);
       const blob = await toBlob();
-      if (blob) form.append("design", blob, "urskive-design.png");
+      if (blob) form.append("produkt", blob, "urskive-design.png");
+      const original = originalFileRef.current;
+      if (original) {
+        const ext = original.name.split(".").pop() || "jpg";
+        form.append("originalbilde", original, `originalbilde.${ext}`);
+      }
       form.append(
         "innstillinger",
         `Hvit urskive: ${whiteDial ? "ja" : "nei"} | Rotasjon: ${rotation}° | Zoom: ${zoom.toFixed(2)}x | Visningsstørrelse: ${size}px`,
