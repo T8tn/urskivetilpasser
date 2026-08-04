@@ -296,9 +296,9 @@ function Configurator() {
           />
           <ControlSlider
             label="Størrelse"
-            value={`${size} px`}
+            value={`${stageSize} px`}
             min={240}
-            max={520}
+            max={maxStage}
             step={10}
             current={size}
             onChange={setSize}
