@@ -20,17 +20,18 @@ const SUBMIT_EMAIL = "kristofferurdal19a@gmail.com";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Urskive Konfigurator – design din egen klokke" },
+      { title: "Skive Atelier – design din egen urskive" },
       {
         name: "description",
         content:
-          "Last opp et bilde, roter og skaler det, og se din egen urskive bli til i sanntid. Last ned som PNG eller send inn designet ditt.",
+          "Last opp et bilde, roter og skaler det, og se din egen urskive bli til i sanntid. Last ned i høy oppløsning eller send inn designet ditt.",
       },
-      { property: "og:title", content: "Urskive Konfigurator – design din egen klokke" },
+      { property: "og:title", content: "Skive Atelier – design din egen urskive" },
       {
         property: "og:description",
         content: "Tilpass din unike urskive i sanntid og send inn designet ditt.",
       },
+
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
