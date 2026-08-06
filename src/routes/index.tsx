@@ -237,10 +237,9 @@ function Configurator() {
         {/* Controls */}
         <section className="flex w-full flex-col gap-5 overflow-y-auto border-border p-5 sm:p-8 md:max-h-[90vh] md:max-w-[460px] md:border-l">
           <header>
-            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">Skive Atelier</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Tilpass din unike urskive i sanntid.
-            </p>
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              Tilpass din urskive
+            </h1>
           </header>
 
           <label className="flex cursor-pointer items-center gap-3 py-1">
