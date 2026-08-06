@@ -99,8 +99,8 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   // 5. Index overlay — transparent PNG, markers scaled so the minute track
   // sits just inside the dial edge exactly like the reference dial.
-  // Index-laget er alltid identisk (samme farge) uansett skivefarge.
-  const overlay = o.indexImage ?? o.indexImageDark;
+  // Hvit skive => sorte indexer, sort skive => hvite indexer.
+  const overlay = o.whiteDial ? (o.indexImageDark ?? o.indexImage) : o.indexImage;
   if (overlay) {
     ctx.save();
     ctx.beginPath();
