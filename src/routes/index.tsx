@@ -337,7 +337,12 @@ function Configurator() {
               {sending ? "Sender..." : "Send design"}
             </Button>
           </form>
+
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Laget av Kristoffer Urdal
+          </p>
         </section>
+
       </div>
     </main>
   );
