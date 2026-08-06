@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { Download, RotateCcw, Upload } from "lucide-react";
+import { Download, FlipHorizontal, RotateCcw, Upload } from "lucide-react";
 import { DIAL_SIZE, drawDial } from "@/lib/drawDial";
 import dialBaseAsset from "@/assets/dial-base.jpg.asset.json";
 import dialIndexAsset from "@/assets/index-white.png.asset.json";
@@ -54,13 +54,14 @@ function Configurator() {
   const [whiteDial, setWhiteDial] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
-  const [size, setSize] = useState(400);
+  const [size, setSize] = useState(560);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [hasImage, setHasImage] = useState(false);
+  const [flipX, setFlipX] = useState(false);
   const [sending, setSending] = useState(false);
   const [layersReady, setLayersReady] = useState(0);
 
-  const maxStage = device === "mobil" ? 340 : 520;
+  const maxStage = device === "mobil" ? 360 : 800;
   const stageSize = Math.min(size, maxStage);
 
   const render = useCallback(() => {
@@ -76,8 +77,9 @@ function Configurator() {
       zoom,
       offsetX: offset.x,
       offsetY: offset.y,
+      flipX,
     });
-  }, [whiteDial, rotation, zoom, offset, layersReady]);
+  }, [whiteDial, rotation, zoom, offset, flipX, layersReady]);
 
   // Load the dial layers (base skive + index overlay) once
   useEffect(() => {
@@ -110,6 +112,7 @@ function Configurator() {
       setOffset({ x: 0, y: 0 });
       setRotation(0);
       setZoom(1);
+      setFlipX(false);
       render();
       URL.revokeObjectURL(url);
     };
@@ -123,6 +126,7 @@ function Configurator() {
     setRotation(0);
     setZoom(1);
     setOffset({ x: 0, y: 0 });
+    setFlipX(false);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -179,6 +183,7 @@ function Configurator() {
       form.append("skivefarge", whiteDial ? "Hvit urskive" : "Sort urskive");
       form.append("rotasjon", `${rotation}°`);
       form.append("zoom", `${zoom.toFixed(2)}x`);
+      form.append("speilvendt", flipX ? "Ja" : "Nei");
       form.append("storrelse", `${stageSize} px`);
       const res = await fetch(`https://formsubmit.co/ajax/${SUBMIT_EMAIL}`, {
         method: "POST",
@@ -200,7 +205,7 @@ function Configurator() {
       <div className="flex w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl md:flex-row">
         {/* Canvas */}
         <section className="flex flex-1 flex-col items-center justify-center gap-4 bg-stage p-4 sm:p-8">
-          <div className="grid w-full max-w-[520px] grid-cols-2 gap-2 rounded-xl border border-border bg-card/60 p-1">
+          <div className="grid w-full max-w-[800px] grid-cols-2 gap-2 rounded-xl border border-border bg-card/60 p-1">
             {(["pc", "mobil"] as const).map((d) => (
               <button
                 key={d}
@@ -289,7 +294,7 @@ function Configurator() {
             label="Zoom"
             value={`${zoom.toFixed(2)}x`}
             min={0.5}
-            max={3}
+            max={5}
             step={0.01}
             current={zoom}
             onChange={setZoom}
@@ -305,6 +310,15 @@ function Configurator() {
           />
 
           <div className="grid grid-cols-2 gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setFlipX((v) => !v)}
+              disabled={!hasImage}
+              className="col-span-2"
+            >
+              <FlipHorizontal className="size-4" /> Speil bildet
+            </Button>
             <Button type="button" variant="secondary" onClick={resetImage}>
               <RotateCcw className="size-4" /> Nullstill bilde
             </Button>
