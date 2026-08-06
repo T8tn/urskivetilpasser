@@ -54,7 +54,7 @@ function Configurator() {
   const [whiteDial, setWhiteDial] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
-  const [size, setSize] = useState(400);
+  const [size, setSize] = useState(560);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [hasImage, setHasImage] = useState(false);
   const [flipX, setFlipX] = useState(false);
