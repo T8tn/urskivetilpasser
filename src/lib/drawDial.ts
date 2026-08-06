@@ -11,7 +11,10 @@ export type DialOptions = {
   zoom: number; // scale multiplier
   offsetX: number; // -1..1 relative to size
   offsetY: number;
+  /** Mirror the uploaded artwork horizontally. */
+  flipX?: boolean;
 };
+
 
 const SIZE = 2400;
 /** Radius of the dial disc inside the square canvas (matches reference image). */
@@ -84,6 +87,7 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
     ctx.save();
     ctx.translate(c + o.offsetX * SIZE, c + o.offsetY * SIZE);
     ctx.rotate((o.rotation * Math.PI) / 180);
+    if (o.flipX) ctx.scale(-1, 1);
     const cover = Math.max((R * 2) / img.width, (R * 2) / img.height) * o.zoom;
     const w = img.width * cover;
     const h = img.height * cover;
@@ -99,18 +103,46 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   // 5. Index overlay — transparent PNG, markers scaled so the minute track
   // sits just inside the dial edge exactly like the reference dial.
-  // Hvit skive => sorte indexer, sort skive => hvite indexer.
-  const overlay = o.whiteDial ? (o.indexImageDark ?? o.indexImage) : o.indexImage;
-  if (overlay) {
+  const s = R * 1.082;
+  const draw = (img: HTMLImageElement, scale = 1, alpha = 1) => {
+    const k = s * scale;
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(img, c - k, c - k, k * 2, k * 2);
+    ctx.globalAlpha = 1;
+  };
+  // Ringen der minuttsporet ligger (ytterst) vs. de store markørene (innenfor).
+  const RING = 0.9;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(c, c, R, 0, Math.PI * 2);
+  ctx.clip();
+
+  if (o.whiteDial && o.indexImageDark && o.indexImage) {
+    // Små minuttindexer: sorte på hvit skive.
     ctx.save();
     ctx.beginPath();
     ctx.arc(c, c, R, 0, Math.PI * 2);
-    ctx.clip();
-    const s = R * 1.082;
-    ctx.drawImage(overlay, c - s, c - s, s * 2, s * 2);
+    ctx.arc(c, c, s * RING, 0, Math.PI * 2, true);
+    ctx.clip("evenodd");
+    draw(o.indexImageDark);
     ctx.restore();
+
+    // Store markører: standard (lyse) med litt kraftigere grå outline.
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(c, c, s * RING, 0, Math.PI * 2);
+    ctx.clip();
+    draw(o.indexImageDark, 1.012, 0.55);
+    draw(o.indexImageDark, 0.988, 0.55);
+    draw(o.indexImage);
+    ctx.restore();
+  } else if (o.indexImage) {
+    draw(o.indexImage);
   }
+  ctx.restore();
 }
+
 
 /** Date window at 3 o'clock — punched through every layer. */
 function drawDateWindow(ctx: CanvasRenderingContext2D, c: number) {
