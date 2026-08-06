@@ -175,10 +175,11 @@ function Configurator() {
         const ext = original.name.split(".").pop() || "jpg";
         form.append("originalbilde", original, `originalbilde.${ext}`);
       }
-      form.append(
-        "innstillinger",
-        `Hvit urskive: ${whiteDial ? "ja" : "nei"} | Rotasjon: ${rotation}° | Zoom: ${zoom.toFixed(2)}x | Visningsstørrelse: ${size}px`,
-      );
+      form.append("_subject", "Nytt urskive-design");
+      form.append("skivefarge", whiteDial ? "Hvit urskive" : "Sort urskive");
+      form.append("rotasjon", `${rotation}°`);
+      form.append("zoom", `${zoom.toFixed(2)}x`);
+      form.append("storrelse", `${stageSize} px`);
       const res = await fetch(`https://formsubmit.co/ajax/${SUBMIT_EMAIL}`, {
         method: "POST",
         body: form,
