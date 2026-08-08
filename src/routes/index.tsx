@@ -371,6 +371,11 @@ function Configurator() {
             </Button>
           </div>
 
+          <p className="rounded-lg border border-border bg-secondary/50 p-3 text-xs text-muted-foreground">
+            NB! Farger og utseende i forhåndsvisningen kan avvike litt fra det endelige
+            resultatet på klokken.
+          </p>
+
           <form onSubmit={submit} className="mt-2 flex flex-col gap-3 border-t border-border pt-5">
             <h2 className="text-lg font-semibold">Send inn ditt design</h2>
             <Input name="navn" placeholder="Navn" required />
@@ -383,8 +388,9 @@ function Configurator() {
           </form>
 
           <p className="mt-2 text-center text-xs text-muted-foreground">
-            Laget av Kristoffer Urdal
+            © 2026 Kristoffer Urdal
           </p>
+
         </section>
 
       </div>
