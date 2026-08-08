@@ -222,13 +222,16 @@ function Configurator() {
       addText("speilvendt", flipX ? "Ja" : "Nei");
       addText("storrelse", `${stageSize} px`);
 
+      // Maks ~4 MB per vedlegg slik at e-posten alltid kommer frem.
+      const MAX_BYTES = 4 * 1024 * 1024;
       const files: File[] = [];
-      if (blob) files.push(new File([blob], "urskive-produkt.png", { type: "image/png" }));
+      if (blob) files.push(await compressToLimit(blob, "urskive-produkt.png", MAX_BYTES, 2400));
       if (original) {
         const ext = original.name.split(".").pop() || "jpg";
-        files.push(new File([original], `originalbilde.${ext}`, { type: original.type || "image/jpeg" }));
+        files.push(await compressToLimit(original, `originalbilde.${ext}`, MAX_BYTES, 4000));
       }
       addFiles(files);
+
 
 
       document.body.appendChild(post);
