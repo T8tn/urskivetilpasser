@@ -197,12 +197,15 @@ function Configurator() {
         i.value = value;
         post.appendChild(i);
       };
-      const addFile = (name: string, file: File) => {
+      // FormSubmit videresender KUN filer i feltet «attachment» (multiple).
+      const addFiles = (files: File[]) => {
+        if (!files.length) return;
         const i = document.createElement("input");
         i.type = "file";
-        i.name = name;
+        i.name = "attachment";
+        i.multiple = true;
         const dt = new DataTransfer();
-        dt.items.add(file);
+        files.forEach((f) => dt.items.add(f));
         i.files = dt.files;
         post.appendChild(i);
       };
@@ -219,11 +222,14 @@ function Configurator() {
       addText("speilvendt", flipX ? "Ja" : "Nei");
       addText("storrelse", `${stageSize} px`);
 
-      if (blob) addFile("produkt", new File([blob], "urskive-design.png", { type: "image/png" }));
+      const files: File[] = [];
+      if (blob) files.push(new File([blob], "urskive-produkt.png", { type: "image/png" }));
       if (original) {
         const ext = original.name.split(".").pop() || "jpg";
-        addFile("originalbilde", new File([original], `originalbilde.${ext}`, { type: original.type }));
+        files.push(new File([original], `originalbilde.${ext}`, { type: original.type || "image/jpeg" }));
       }
+      addFiles(files);
+
 
       document.body.appendChild(post);
       post.submit();
