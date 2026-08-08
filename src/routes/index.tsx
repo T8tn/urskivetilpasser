@@ -170,27 +170,69 @@ function Configurator() {
       return;
     }
     setSending(true);
+    const formEl = e.currentTarget;
     try {
-      const form = new FormData(e.currentTarget);
+      const data = new FormData(formEl);
       const blob = await toBlob();
-      if (blob) form.append("produkt", blob, "urskive-design.png");
       const original = originalFileRef.current;
+
+      // FormSubmit sender kun vedlegg via ekte multipart-POST (ikke ajax),
+      // så vi poster i en skjult iframe med ekte file-inputs.
+      const iframe = document.createElement("iframe");
+      iframe.name = `fs-${Date.now()}`;
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+
+      const post = document.createElement("form");
+      post.action = `https://formsubmit.co/${SUBMIT_EMAIL}`;
+      post.method = "POST";
+      post.enctype = "multipart/form-data";
+      post.target = iframe.name;
+      post.style.display = "none";
+
+      const addText = (name: string, value: string) => {
+        const i = document.createElement("input");
+        i.type = "hidden";
+        i.name = name;
+        i.value = value;
+        post.appendChild(i);
+      };
+      const addFile = (name: string, file: File) => {
+        const i = document.createElement("input");
+        i.type = "file";
+        i.name = name;
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        i.files = dt.files;
+        post.appendChild(i);
+      };
+
+      for (const [k, v] of data.entries()) {
+        if (typeof v === "string") addText(k, v);
+      }
+      addText("_subject", "Nytt urskive-design");
+      addText("_captcha", "false");
+      addText("_template", "table");
+      addText("skivefarge", whiteDial ? "Hvit urskive" : "Sort urskive");
+      addText("rotasjon", `${rotation}°`);
+      addText("zoom", `${zoom.toFixed(2)}x`);
+      addText("speilvendt", flipX ? "Ja" : "Nei");
+      addText("storrelse", `${stageSize} px`);
+
+      if (blob) addFile("produkt", new File([blob], "urskive-design.png", { type: "image/png" }));
       if (original) {
         const ext = original.name.split(".").pop() || "jpg";
-        form.append("originalbilde", original, `originalbilde.${ext}`);
+        addFile("originalbilde", new File([original], `originalbilde.${ext}`, { type: original.type }));
       }
-      form.append("_subject", "Nytt urskive-design");
-      form.append("skivefarge", whiteDial ? "Hvit urskive" : "Sort urskive");
-      form.append("rotasjon", `${rotation}°`);
-      form.append("zoom", `${zoom.toFixed(2)}x`);
-      form.append("speilvendt", flipX ? "Ja" : "Nei");
-      form.append("storrelse", `${stageSize} px`);
-      const res = await fetch(`https://formsubmit.co/ajax/${SUBMIT_EMAIL}`, {
-        method: "POST",
-        body: form,
-      });
-      if (!res.ok) throw new Error("failed");
-      (e.target as HTMLFormElement).reset();
+
+      document.body.appendChild(post);
+      post.submit();
+      setTimeout(() => {
+        post.remove();
+        iframe.remove();
+      }, 60000);
+
+      formEl.reset();
       toast.success("Takk! Designet ditt er sendt inn.");
     } catch {
       toast.error("Noe gikk galt. Prøv igjen.");
@@ -198,6 +240,8 @@ function Configurator() {
       setSending(false);
     }
   };
+
+
 
   return (
     <main className="flex min-h-screen items-start justify-center bg-background p-3 sm:items-center sm:p-5">
@@ -327,6 +371,11 @@ function Configurator() {
             </Button>
           </div>
 
+          <p className="rounded-lg border border-border bg-secondary/50 p-3 text-xs text-muted-foreground">
+            NB! Farger og utseende i forhåndsvisningen kan avvike litt fra det endelige
+            resultatet på klokken.
+          </p>
+
           <form onSubmit={submit} className="mt-2 flex flex-col gap-3 border-t border-border pt-5">
             <h2 className="text-lg font-semibold">Send inn ditt design</h2>
             <Input name="navn" placeholder="Navn" required />
@@ -339,8 +388,9 @@ function Configurator() {
           </form>
 
           <p className="mt-2 text-center text-xs text-muted-foreground">
-            Laget av Kristoffer Urdal
+            © 2026 Kristoffer Urdal
           </p>
+
         </section>
 
       </div>

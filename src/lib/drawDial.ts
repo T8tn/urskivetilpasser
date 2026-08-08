@@ -103,17 +103,31 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   // 5. Index overlay — transparent PNG, markers scaled so the minute track
   // sits just inside the dial edge exactly like the reference dial.
+  // The big markers (triangle, bars, dots) keep their standard light colour on
+  // every dial; only the thin minute track switches to dark on a white dial.
   const s = R * 1.082;
-  const overlay = o.whiteDial && o.indexImageDark ? o.indexImageDark : o.indexImage;
+  const RING = R * 0.88;
 
-  if (overlay) {
+  if (o.indexImage) {
+    // Big markers — always standard colour
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(c, c, RING, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(o.indexImage, c - s, c - s, s * 2, s * 2);
+    ctx.restore();
+
+    // Outer minute track — dark on a white dial
+    const track = o.whiteDial && o.indexImageDark ? o.indexImageDark : o.indexImage;
     ctx.save();
     ctx.beginPath();
     ctx.arc(c, c, R, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.drawImage(overlay, c - s, c - s, s * 2, s * 2);
+    ctx.arc(c, c, RING, 0, Math.PI * 2, true);
+    ctx.clip("evenodd");
+    ctx.drawImage(track, c - s, c - s, s * 2, s * 2);
     ctx.restore();
   }
+
 }
 
 
