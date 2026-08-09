@@ -130,12 +130,56 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
     ctx.restore();
   }
 
+  // 6. Hands preview (on top of everything, centered)
+  if (o.showHands) drawHands(ctx, c);
 }
 
+/** Classic centered hands at 10:10:30, drawn on top of the dial. */
+function drawHands(ctx: CanvasRenderingContext2D, c: number) {
+  const hand = (
+    angleDeg: number,
+    length: number,
+    width: number,
+    tail: number,
+    color: string,
+  ) => {
+    ctx.save();
+    ctx.translate(c, c);
+    ctx.rotate((angleDeg * Math.PI) / 180);
+    ctx.shadowColor = "rgba(0,0,0,0.45)";
+    ctx.shadowBlur = 0.02 * R;
+    ctx.shadowOffsetX = 0.008 * R;
+    ctx.shadowOffsetY = 0.012 * R;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    roundRect(ctx, -width / 2, -length, width, length + tail, width / 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,0.35)";
+    ctx.lineWidth = 0.006 * R;
+    ctx.stroke();
+    ctx.restore();
+  };
 
+  // 10:10:30
+  hand(-60.75, 0.5 * R, 0.075 * R, 0.11 * R, "#f5f5f5");
+  hand(60, 0.75 * R, 0.055 * R, 0.13 * R, "#f5f5f5");
+  hand(180, 0.8 * R, 0.016 * R, 0.2 * R, "#d94b3a");
+
+  // Center cap
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(c, c, 0.045 * R, 0, Math.PI * 2);
+  ctx.fillStyle = "#e8e8e8";
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(c, c, 0.018 * R, 0, Math.PI * 2);
+  ctx.fillStyle = "#1a1a1a";
+  ctx.fill();
+  ctx.restore();
+}
 
 /** Date window at 3 o'clock — punched through every layer. */
-function drawDateWindow(ctx: CanvasRenderingContext2D, c: number) {
+function drawDateWindow(ctx: CanvasRenderingContext2D, c: number, withDate = false) {
   const w = 0.215 * R;
   const h = 0.175 * R;
   const x = c + 0.675 * R;
@@ -145,14 +189,27 @@ function drawDateWindow(ctx: CanvasRenderingContext2D, c: number) {
   ctx.save();
   ctx.beginPath();
   roundRect(ctx, x - w / 2, y - h / 2, w, h, r);
-  const grad = ctx.createLinearGradient(x - w / 2, y - h / 2, x + w / 2, y + h / 2);
-  grad.addColorStop(0, "#151515");
-  grad.addColorStop(1, "#050505");
-  ctx.fillStyle = grad;
-  ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.22)";
-  ctx.lineWidth = 0.012 * R;
-  ctx.stroke();
+  if (withDate) {
+    ctx.fillStyle = "#ffffff";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,0.35)";
+    ctx.lineWidth = 0.012 * R;
+    ctx.stroke();
+    ctx.fillStyle = "#111111";
+    ctx.font = `600 ${0.13 * R}px "Helvetica Neue", Arial, sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("28", x, y + 0.004 * R);
+  } else {
+    const grad = ctx.createLinearGradient(x - w / 2, y - h / 2, x + w / 2, y + h / 2);
+    grad.addColorStop(0, "#151515");
+    grad.addColorStop(1, "#050505");
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,0.22)";
+    ctx.lineWidth = 0.012 * R;
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
