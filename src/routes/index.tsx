@@ -84,6 +84,7 @@ function Configurator() {
       offsetY: offset.y,
       flipX,
       showHands,
+      handsImage: handsRef.current,
     });
   }, [whiteDial, rotation, zoom, offset, flipX, showHands, layersReady]);
 
