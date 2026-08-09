@@ -60,6 +60,7 @@ function Configurator() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [hasImage, setHasImage] = useState(false);
   const [flipX, setFlipX] = useState(false);
+  const [showHands, setShowHands] = useState(false);
   const [sending, setSending] = useState(false);
   const [layersReady, setLayersReady] = useState(0);
 
@@ -80,8 +81,9 @@ function Configurator() {
       offsetX: offset.x,
       offsetY: offset.y,
       flipX,
+      showHands,
     });
-  }, [whiteDial, rotation, zoom, offset, flipX, layersReady]);
+  }, [whiteDial, rotation, zoom, offset, flipX, showHands, layersReady]);
 
   // Load the dial layers (base skive + index overlay) once
   useEffect(() => {
@@ -223,6 +225,13 @@ function Configurator() {
       addText("zoom", `${zoom.toFixed(2)}x`);
       addText("speilvendt", flipX ? "Ja" : "Nei");
       addText("storrelse", `${stageSize} px`);
+      addText("posisjon_x", offset.x.toFixed(4));
+      addText("posisjon_y", offset.y.toFixed(4));
+      addText(
+        "posisjon_beskrivelse",
+        `X ${(offset.x * 100).toFixed(1)}% / Y ${(offset.y * 100).toFixed(1)}% av skivebredden (0 = sentrert)`,
+      );
+      addText("visere_forhandsvisning", showHands ? "Ja" : "Nei");
 
       // Maks ~4 MB per vedlegg slik at e-posten alltid kommer frem.
       const MAX_BYTES = 4 * 1024 * 1024;
@@ -310,6 +319,16 @@ function Configurator() {
             />
             <span className="text-sm">Hvit urskive</span>
           </label>
+
+          <label className="flex cursor-pointer items-center gap-3 py-1">
+            <Checkbox
+              checked={showHands}
+              onCheckedChange={(v) => setShowHands(v === true)}
+              aria-label="Forhåndsvisning med visere"
+            />
+            <span className="text-sm">Forhåndsvisning med visere og dato</span>
+          </label>
+
 
 
           <div className="flex flex-col gap-2">
