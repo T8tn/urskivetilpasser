@@ -99,6 +99,8 @@ function Configurator() {
     load(dialBaseAsset.url, baseRef);
     load(dialIndexAsset.url, indexRef);
     load(dialIndexDarkAsset.url, indexDarkRef);
+    load(handsAsset.url, handsRef);
+
   }, []);
 
   useEffect(() => {
