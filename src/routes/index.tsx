@@ -320,6 +320,16 @@ function Configurator() {
             <span className="text-sm">Hvit urskive</span>
           </label>
 
+          <label className="flex cursor-pointer items-center gap-3 py-1">
+            <Checkbox
+              checked={showHands}
+              onCheckedChange={(v) => setShowHands(v === true)}
+              aria-label="Forhåndsvisning med visere"
+            />
+            <span className="text-sm">Forhåndsvisning med visere og dato</span>
+          </label>
+
+
 
           <div className="flex flex-col gap-2">
             <Label>Bakgrunnsbilde for urskive</Label>
