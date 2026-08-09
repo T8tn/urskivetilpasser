@@ -15,6 +15,7 @@ import { compressToLimit } from "@/lib/compressImage";
 import dialBaseAsset from "@/assets/dial-base.jpg.asset.json";
 import dialIndexAsset from "@/assets/index-white.png.asset.json";
 import dialIndexDarkAsset from "@/assets/index-black.png.asset.json";
+import handsAsset from "@/assets/hands.png.asset.json";
 
 // Mottaker for innsendte design.
 const SUBMIT_EMAIL = "kristofferurdal19a@gmail.com";
