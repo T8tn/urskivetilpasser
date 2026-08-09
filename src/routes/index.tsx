@@ -225,6 +225,13 @@ function Configurator() {
       addText("zoom", `${zoom.toFixed(2)}x`);
       addText("speilvendt", flipX ? "Ja" : "Nei");
       addText("storrelse", `${stageSize} px`);
+      addText("posisjon_x", offset.x.toFixed(4));
+      addText("posisjon_y", offset.y.toFixed(4));
+      addText(
+        "posisjon_beskrivelse",
+        `X ${(offset.x * 100).toFixed(1)}% / Y ${(offset.y * 100).toFixed(1)}% av skivebredden (0 = sentrert)`,
+      );
+      addText("visere_forhandsvisning", showHands ? "Ja" : "Nei");
 
       // Maks ~4 MB per vedlegg slik at e-posten alltid kommer frem.
       const MAX_BYTES = 4 * 1024 * 1024;
