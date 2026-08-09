@@ -15,6 +15,9 @@ export type DialOptions = {
   flipX?: boolean;
   /** Preview with hands + date "28" in the date window. */
   showHands?: boolean;
+  /** Hands overlay image (transparent PNG, centered pivot). */
+  handsImage?: HTMLImageElement | null;
+
 };
 
 
