@@ -15,6 +15,9 @@ export type DialOptions = {
   flipX?: boolean;
   /** Preview with hands + date "28" in the date window. */
   showHands?: boolean;
+  /** Hands overlay image (transparent PNG, centered pivot). */
+  handsImage?: HTMLImageElement | null;
+
 };
 
 
@@ -131,52 +134,12 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
   }
 
   // 6. Hands preview (on top of everything, centered)
-  if (o.showHands) drawHands(ctx, c);
+  if (o.showHands && o.handsImage) {
+    const hs = R * 0.87;
+    ctx.drawImage(o.handsImage, c - hs, c - hs, hs * 2, hs * 2);
+  }
 }
 
-/** Classic centered hands at 10:10:30, drawn on top of the dial. */
-function drawHands(ctx: CanvasRenderingContext2D, c: number) {
-  const hand = (
-    angleDeg: number,
-    length: number,
-    width: number,
-    tail: number,
-    color: string,
-  ) => {
-    ctx.save();
-    ctx.translate(c, c);
-    ctx.rotate((angleDeg * Math.PI) / 180);
-    ctx.shadowColor = "rgba(0,0,0,0.45)";
-    ctx.shadowBlur = 0.02 * R;
-    ctx.shadowOffsetX = 0.008 * R;
-    ctx.shadowOffsetY = 0.012 * R;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    roundRect(ctx, -width / 2, -length, width, length + tail, width / 2);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(0,0,0,0.35)";
-    ctx.lineWidth = 0.006 * R;
-    ctx.stroke();
-    ctx.restore();
-  };
-
-  // 10:10:30
-  hand(-60.75, 0.5 * R, 0.075 * R, 0.11 * R, "#f5f5f5");
-  hand(60, 0.75 * R, 0.055 * R, 0.13 * R, "#f5f5f5");
-  hand(180, 0.8 * R, 0.016 * R, 0.2 * R, "#d94b3a");
-
-  // Center cap
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(c, c, 0.045 * R, 0, Math.PI * 2);
-  ctx.fillStyle = "#e8e8e8";
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(c, c, 0.018 * R, 0, Math.PI * 2);
-  ctx.fillStyle = "#1a1a1a";
-  ctx.fill();
-  ctx.restore();
-}
 
 /** Date window at 3 o'clock — punched through every layer. */
 function drawDateWindow(ctx: CanvasRenderingContext2D, c: number, withDate = false) {

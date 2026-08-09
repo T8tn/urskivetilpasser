@@ -15,6 +15,7 @@ import { compressToLimit } from "@/lib/compressImage";
 import dialBaseAsset from "@/assets/dial-base.jpg.asset.json";
 import dialIndexAsset from "@/assets/index-white.png.asset.json";
 import dialIndexDarkAsset from "@/assets/index-black.png.asset.json";
+import handsAsset from "@/assets/hands.png.asset.json";
 
 // Mottaker for innsendte design.
 const SUBMIT_EMAIL = "kristofferurdal19a@gmail.com";
@@ -49,6 +50,7 @@ function Configurator() {
   const baseRef = useRef<HTMLImageElement | null>(null);
   const indexRef = useRef<HTMLImageElement | null>(null);
   const indexDarkRef = useRef<HTMLImageElement | null>(null);
+  const handsRef = useRef<HTMLImageElement | null>(null);
 
   const [device, setDevice] = useState<"pc" | "mobil">(
     typeof window !== "undefined" && window.innerWidth < 768 ? "mobil" : "pc",
@@ -82,6 +84,7 @@ function Configurator() {
       offsetY: offset.y,
       flipX,
       showHands,
+      handsImage: handsRef.current,
     });
   }, [whiteDial, rotation, zoom, offset, flipX, showHands, layersReady]);
 
@@ -99,6 +102,8 @@ function Configurator() {
     load(dialBaseAsset.url, baseRef);
     load(dialIndexAsset.url, indexRef);
     load(dialIndexDarkAsset.url, indexDarkRef);
+    load(handsAsset.url, handsRef);
+
   }, []);
 
   useEffect(() => {
