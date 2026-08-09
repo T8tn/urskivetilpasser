@@ -360,6 +360,34 @@ function Configurator() {
             )}
           </div>
 
+          <div className="flex flex-col gap-2">
+            <Label>Posisjon (X / Y)</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                type="number"
+                step="0.001"
+                value={offset.x.toFixed(4)}
+                onChange={(e) =>
+                  setOffset((o) => ({ ...o, x: Number(e.target.value) || 0 }))
+                }
+                aria-label="Posisjon X"
+              />
+              <Input
+                type="number"
+                step="0.001"
+                value={offset.y.toFixed(4)}
+                onChange={(e) =>
+                  setOffset((o) => ({ ...o, y: Number(e.target.value) || 0 }))
+                }
+                aria-label="Posisjon Y"
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Verdiene oppdateres når du drar bildet. Lim inn verdiene fra e-posten for å
+              gjenskape et design nøyaktig.
+            </p>
+          </div>
+
           <ControlSlider
             label="Rotasjon"
             value={`${rotation}°`}
