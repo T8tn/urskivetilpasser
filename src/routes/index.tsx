@@ -60,6 +60,7 @@ function Configurator() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [hasImage, setHasImage] = useState(false);
   const [flipX, setFlipX] = useState(false);
+  const [showHands, setShowHands] = useState(false);
   const [sending, setSending] = useState(false);
   const [layersReady, setLayersReady] = useState(0);
 
@@ -80,8 +81,9 @@ function Configurator() {
       offsetX: offset.x,
       offsetY: offset.y,
       flipX,
+      showHands,
     });
-  }, [whiteDial, rotation, zoom, offset, flipX, layersReady]);
+  }, [whiteDial, rotation, zoom, offset, flipX, showHands, layersReady]);
 
   // Load the dial layers (base skive + index overlay) once
   useEffect(() => {
