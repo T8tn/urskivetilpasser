@@ -98,8 +98,8 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
   }
 
   // 4. Holes — always on top of the artwork
-  drawDateWindow(ctx, c);
-  drawCenterHole(ctx, c);
+  drawDateWindow(ctx, c, o.showHands === true);
+  if (!o.showHands) drawCenterHole(ctx, c);
 
   ctx.restore();
 
