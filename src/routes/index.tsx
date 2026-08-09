@@ -50,6 +50,7 @@ function Configurator() {
   const baseRef = useRef<HTMLImageElement | null>(null);
   const indexRef = useRef<HTMLImageElement | null>(null);
   const indexDarkRef = useRef<HTMLImageElement | null>(null);
+  const handsRef = useRef<HTMLImageElement | null>(null);
 
   const [device, setDevice] = useState<"pc" | "mobil">(
     typeof window !== "undefined" && window.innerWidth < 768 ? "mobil" : "pc",
