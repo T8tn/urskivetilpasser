@@ -13,6 +13,8 @@ export type DialOptions = {
   offsetY: number;
   /** Mirror the uploaded artwork horizontally. */
   flipX?: boolean;
+  /** Preview with hands + date "28" in the date window. */
+  showHands?: boolean;
 };
 
 
