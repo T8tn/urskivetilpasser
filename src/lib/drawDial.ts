@@ -135,7 +135,7 @@ export function drawDial(ctx: CanvasRenderingContext2D, o: DialOptions) {
 
   // 6. Hands preview (on top of everything, centered)
   if (o.showHands && o.handsImage) {
-    const hs = R * 0.68;
+    const hs = R * 0.755;
     ctx.save();
     ctx.filter = "brightness(1.25) saturate(0.85)";
     ctx.drawImage(o.handsImage, c - hs, c - hs, hs * 2, hs * 2);
