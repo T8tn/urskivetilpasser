@@ -8,14 +8,40 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { Download, FlipHorizontal, RotateCcw, Upload } from "lucide-react";
+import { ChevronLeft, ChevronRight, Download, FlipHorizontal, RotateCcw, Upload } from "lucide-react";
 import { DIAL_SIZE, drawDial } from "@/lib/drawDial";
+import { drawWatch, WATCH_GEOMETRY, type BraceletKey } from "@/lib/watchPreview";
 import { compressToLimit } from "@/lib/compressImage";
 
 import dialBaseAsset from "@/assets/dial-base.jpg.asset.json";
 import dialIndexAsset from "@/assets/index-white.png.asset.json";
 import dialIndexDarkAsset from "@/assets/index-black.png.asset.json";
 import handsAsset from "@/assets/hands.png.asset.json";
+import watchOysterAsset from "@/assets/watch-oyster.webp.asset.json";
+import watchJubileeAsset from "@/assets/watch-jubilee.webp.asset.json";
+import bezelBlack from "@/assets/bezel-black.png.asset.json";
+import bezelBatman from "@/assets/bezel-batman.png.asset.json";
+import bezelSprite from "@/assets/bezel-sprite.png.asset.json";
+import bezelCoke from "@/assets/bezel-pepsi.png.asset.json";
+import bezelHulk from "@/assets/bezel-hulk.png.asset.json";
+import bezelGhost from "@/assets/bezel-ghost.png.asset.json";
+import bezelWhite from "@/assets/bezel-white.png.asset.json";
+
+const BEZELS = [
+  { name: "Sort", url: bezelBlack.url },
+  { name: "Batman", url: bezelBatman.url },
+  { name: "Sprite", url: bezelSprite.url },
+  { name: "Coke", url: bezelCoke.url },
+  { name: "Hulk", url: bezelHulk.url },
+  { name: "Ghost", url: bezelGhost.url },
+  { name: "Hvit keramikk", url: bezelWhite.url },
+];
+
+const BRACELETS: { key: BraceletKey; label: string; url: string }[] = [
+  { key: "oyster", label: "Oyster", url: watchOysterAsset.url },
+  { key: "jubilee", label: "Jubilee", url: watchJubileeAsset.url },
+];
+
 
 // Mottaker for innsendte design.
 const SUBMIT_EMAIL = "kristofferurdal19a@gmail.com";
@@ -51,6 +77,9 @@ function Configurator() {
   const indexRef = useRef<HTMLImageElement | null>(null);
   const indexDarkRef = useRef<HTMLImageElement | null>(null);
   const handsRef = useRef<HTMLImageElement | null>(null);
+  const watchCanvasRef = useRef<HTMLCanvasElement>(null);
+  const watchPhotoRefs = useRef<Record<string, HTMLImageElement>>({});
+  const bezelRefs = useRef<Record<string, HTMLImageElement>>({});
 
   const [device, setDevice] = useState<"pc" | "mobil">(
     typeof window !== "undefined" && window.innerWidth < 768 ? "mobil" : "pc",
@@ -65,9 +94,13 @@ function Configurator() {
   const [showHands, setShowHands] = useState(false);
   const [sending, setSending] = useState(false);
   const [layersReady, setLayersReady] = useState(0);
+  const [watchPreview, setWatchPreview] = useState(false);
+  const [bracelet, setBracelet] = useState<BraceletKey>("oyster");
+  const [bezelIdx, setBezelIdx] = useState(0);
 
   const maxStage = device === "mobil" ? 360 : 800;
   const stageSize = Math.min(size, maxStage);
+  const bezel = BEZELS[bezelIdx]!;
 
   const render = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -86,29 +119,52 @@ function Configurator() {
       showHands,
       handsImage: handsRef.current,
     });
-  }, [whiteDial, rotation, zoom, offset, flipX, showHands, layersReady]);
+
+    const wctx = watchCanvasRef.current?.getContext("2d");
+    if (wctx) {
+      drawWatch(wctx, {
+        photo: watchPhotoRefs.current[bracelet] ?? null,
+        dial: canvasRef.current,
+        bezel: bezelRefs.current[bezel.name] ?? null,
+        geometry: WATCH_GEOMETRY[bracelet],
+      });
+    }
+  }, [whiteDial, rotation, zoom, offset, flipX, showHands, layersReady, bracelet, bezel, watchPreview]);
 
   // Load the dial layers (base skive + index overlay) once
   useEffect(() => {
-    const load = (src: string, ref: React.MutableRefObject<HTMLImageElement | null>) => {
+    const load = (src: string, done: (img: HTMLImageElement) => void) => {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload = () => {
-        ref.current = img;
+        done(img);
         setLayersReady((n) => n + 1);
       };
       img.src = src;
     };
-    load(dialBaseAsset.url, baseRef);
-    load(dialIndexAsset.url, indexRef);
-    load(dialIndexDarkAsset.url, indexDarkRef);
-    load(handsAsset.url, handsRef);
-
+    const into = (ref: React.MutableRefObject<HTMLImageElement | null>) => (img: HTMLImageElement) => {
+      ref.current = img;
+    };
+    load(dialBaseAsset.url, into(baseRef));
+    load(dialIndexAsset.url, into(indexRef));
+    load(dialIndexDarkAsset.url, into(indexDarkRef));
+    load(handsAsset.url, into(handsRef));
+    BRACELETS.forEach((b) =>
+      load(b.url, (img) => {
+        watchPhotoRefs.current[b.key] = img;
+      }),
+    );
+    BEZELS.forEach((b) =>
+      load(b.url, (img) => {
+        bezelRefs.current[b.name] = img;
+      }),
+    );
   }, []);
 
   useEffect(() => {
     render();
   }, [render]);
+
 
   const onFile = (file?: File) => {
     if (!file) return;
@@ -237,6 +293,9 @@ function Configurator() {
         `X ${(offset.x * 100).toFixed(1)}% / Y ${(offset.y * 100).toFixed(1)}% av skivebredden (0 = sentrert)`,
       );
       addText("visere_forhandsvisning", showHands ? "Ja" : "Nei");
+      addText("armbaand", bracelet === "oyster" ? "Oyster" : "Jubilee");
+      addText("bezel", bezel.name);
+
 
       // Maks ~4 MB per vedlegg slik at e-posten alltid kommer frem.
       const MAX_BYTES = 4 * 1024 * 1024;
@@ -306,7 +365,67 @@ function Configurator() {
               className={`block h-full w-full ${hasImage ? "cursor-grab active:cursor-grabbing" : ""}`}
             />
           </div>
+
+          <label className="flex cursor-pointer items-center gap-3">
+            <Checkbox
+              checked={watchPreview}
+              onCheckedChange={(v) => setWatchPreview(v === true)}
+              aria-label="Forhåndsvisning på klokke"
+            />
+            <span className="text-sm">Forhåndsvisning på klokke</span>
+          </label>
+
+          {watchPreview && (
+            <div className="flex w-full flex-col items-center gap-3" style={{ maxWidth: stageSize }}>
+              <canvas
+                ref={watchCanvasRef}
+                width={bracelet === "oyster" ? 1200 : 799}
+                height={bracelet === "oyster" ? 1254 : 1019}
+                className="block w-full rounded-lg"
+              />
+
+              <div className="grid w-full grid-cols-2 gap-2 rounded-xl border border-border bg-card/60 p-1">
+                {BRACELETS.map((b) => (
+                  <button
+                    key={b.key}
+                    type="button"
+                    onClick={() => setBracelet(b.key)}
+                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                      bracelet === b.key
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-accent"
+                    }`}
+                  >
+                    {b.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-card/60 p-1">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Forrige bezel"
+                  onClick={() => setBezelIdx((i) => (i - 1 + BEZELS.length) % BEZELS.length)}
+                >
+                  <ChevronLeft className="size-4" />
+                </Button>
+                <span className="text-sm font-medium">{bezel.name} bezel</span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Neste bezel"
+                  onClick={() => setBezelIdx((i) => (i + 1) % BEZELS.length)}
+                >
+                  <ChevronRight className="size-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </section>
+
 
         {/* Controls */}
         <section className="flex w-full flex-col gap-5 overflow-y-auto border-border p-5 sm:p-8 md:max-h-[90vh] md:max-w-[460px] md:border-l">
