@@ -30,6 +30,8 @@ export function drawWatch(
     photo: HTMLImageElement | null;
     dial: HTMLCanvasElement | null;
     bezel: HTMLImageElement | null;
+    /** inner-hole radius of the bezel PNG, as a fraction of its half-width */
+    bezelInnerRatio?: number;
     geometry: WatchGeometry;
   },
 ) {
@@ -40,11 +42,22 @@ export function drawWatch(
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = "#ffffff";
+
+  // Grey studio backdrop behind the watch case
+  const bg = ctx.createLinearGradient(0, 0, w, h);
+  bg.addColorStop(0, "#8a8a8a");
+  bg.addColorStop(0.5, "#7c7c7c");
+  bg.addColorStop(1, "#6c6c6c");
+  ctx.fillStyle = bg;
   ctx.fillRect(0, 0, w, h);
   if (!photo) return;
 
+  // The source photos have a white studio background — key it out so the
+  // grey backdrop shows through around the case and bracelet.
+  ctx.save();
+  ctx.globalCompositeOperation = "multiply";
   ctx.drawImage(photo, 0, 0, w, h);
+  ctx.restore();
 
   const cx = g.cx * w;
   const cy = g.cy * h;
@@ -63,10 +76,16 @@ export function drawWatch(
     ctx.restore();
   }
 
-  // Bezel insert on top
+  // Bezel insert on top — scaled so its inner hole lands exactly on the
+  // dial edge, and clipped so it never spills over the steel bezel teeth.
   if (bezel) {
+    const inner = opts.bezelInnerRatio ?? 0.811;
+    const rOuter = rDial / inner;
     ctx.save();
-    ctx.drawImage(bezel, cx - rBezel, cy - rBezel, rBezel * 2, rBezel * 2);
+    ctx.beginPath();
+    ctx.arc(cx, cy, rBezel, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(bezel, cx - rOuter, cy - rOuter, rOuter * 2, rOuter * 2);
     ctx.restore();
   }
 
