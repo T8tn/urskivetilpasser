@@ -22,19 +22,26 @@ import watchJubileeAsset from "@/assets/watch-jubilee.webp.asset.json";
 import bezelBlack from "@/assets/bezel-black.png.asset.json";
 import bezelBatman from "@/assets/bezel-batman.png.asset.json";
 import bezelSprite from "@/assets/bezel-sprite.png.asset.json";
-import bezelCoke from "@/assets/bezel-pepsi.png.asset.json";
+import bezelCoke from "@/assets/bezel-coke.png.asset.json";
+import bezelPepsi from "@/assets/bezel-pepsi.png.asset.json";
+import bezelBlue from "@/assets/bezel-blue.png.asset.json";
 import bezelHulk from "@/assets/bezel-hulk.png.asset.json";
 import bezelGhost from "@/assets/bezel-ghost.png.asset.json";
+import bezelSteel from "@/assets/bezel-steel.png.asset.json";
 import bezelWhite from "@/assets/bezel-white.png.asset.json";
 
+/** `inner` = radius of the PNG's centre hole / half its width (measured per file). */
 const BEZELS = [
-  { name: "Sort", url: bezelBlack.url },
-  { name: "Batman", url: bezelBatman.url },
-  { name: "Sprite", url: bezelSprite.url },
-  { name: "Coke", url: bezelCoke.url },
-  { name: "Hulk", url: bezelHulk.url },
-  { name: "Ghost", url: bezelGhost.url },
-  { name: "Hvit keramikk", url: bezelWhite.url },
+  { name: "Sort", url: bezelBlack.url, inner: 0.8112 },
+  { name: "Batman", url: bezelBatman.url, inner: 0.8112 },
+  { name: "Sprite", url: bezelSprite.url, inner: 0.8114 },
+  { name: "Hulk", url: bezelHulk.url, inner: 0.8142 },
+  { name: "Pepsi", url: bezelPepsi.url, inner: 0.8112 },
+  { name: "Coke", url: bezelCoke.url, inner: 0.8112 },
+  { name: "Smurf (blå)", url: bezelBlue.url, inner: 0.8104 },
+  { name: "Ghost", url: bezelGhost.url, inner: 0.7957 },
+  { name: "Stål", url: bezelSteel.url, inner: 0.8272 },
+  { name: "Hvit keramikk", url: bezelWhite.url, inner: 0.803 },
 ];
 
 const BRACELETS: { key: BraceletKey; label: string; url: string }[] = [
@@ -126,6 +133,7 @@ function Configurator() {
         photo: watchPhotoRefs.current[bracelet] ?? null,
         dial: canvasRef.current,
         bezel: bezelRefs.current[bezel.name] ?? null,
+        bezelInnerRatio: bezel.inner,
         geometry: WATCH_GEOMETRY[bracelet],
       });
     }
