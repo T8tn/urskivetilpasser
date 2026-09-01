@@ -133,6 +133,7 @@ function Configurator() {
         photo: watchPhotoRefs.current[bracelet] ?? null,
         dial: canvasRef.current,
         bezel: bezelRefs.current[bezel.name] ?? null,
+        bezelInnerRatio: bezel.inner,
         geometry: WATCH_GEOMETRY[bracelet],
       });
     }
