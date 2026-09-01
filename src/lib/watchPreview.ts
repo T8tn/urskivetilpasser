@@ -6,15 +6,21 @@ export type WatchGeometry = {
   /** center of the bezel/dial, relative to image width/height */
   cx: number;
   cy: number;
-  /** bezel insert outer radius, relative to image width */
+  /** outer limit of the bezel insert, relative to image width */
   bezelR: number;
-  /** dial radius, relative to image width */
+  /** dial (crystal) radius, relative to image width */
   dialR: number;
 };
 
+/**
+ * Calibrated against the two watch photos by circle-fitting the dark seam
+ * between the ceramic insert and the steel bezel teeth.
+ * oyster photo: 1200x1200, center (590.3, 516.7), dial r=211, insert outer r=260
+ * jubilee photo: 799x1019, center (402.8, 455.2), dial r=157, insert outer r=194
+ */
 export const WATCH_GEOMETRY: Record<BraceletKey, WatchGeometry> = {
-  oyster: { cx: 0.4817, cy: 0.4545, bezelR: 0.243, dialR: 0.1885 },
-  jubilee: { cx: 0.501, cy: 0.4465, bezelR: 0.2385, dialR: 0.185 },
+  oyster: { cx: 0.4919, cy: 0.4306, bezelR: 0.2167, dialR: 0.1758 },
+  jubilee: { cx: 0.5041, cy: 0.4467, bezelR: 0.2428, dialR: 0.1965 },
 };
 
 /** Composite the rendered dial + chosen bezel insert onto a real watch photo. */
