@@ -45,9 +45,9 @@ function keyOutWhite(photo: HTMLImageElement): HTMLCanvasElement {
   const img = octx.getImageData(0, 0, w, h);
   const d = img.data;
   for (let i = 0; i < d.length; i += 4) {
-    const r = d[i];
-    const g = d[i + 1];
-    const b = d[i + 2];
+    const r = d[i] ?? 0;
+    const g = d[i + 1] ?? 0;
+    const b = d[i + 2] ?? 0;
     const min = Math.min(r, g, b);
     const max = Math.max(r, g, b);
     // Only pure, unsaturated near-white pixels count as background.
