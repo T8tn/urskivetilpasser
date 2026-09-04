@@ -19,9 +19,49 @@ export type WatchGeometry = {
  * jubilee photo: 799x1019, center (402.8, 455.2), dial r=157, insert outer r=194
  */
 export const WATCH_GEOMETRY: Record<BraceletKey, WatchGeometry> = {
-  oyster: { cx: 0.4919, cy: 0.4306, bezelR: 0.2167, dialR: 0.1758 },
-  jubilee: { cx: 0.5041, cy: 0.4467, bezelR: 0.2428, dialR: 0.1965 },
+  // oyster photo 1200x1254: insert circle center (575.7, 566.0), outer r = 282.5
+  oyster: { cx: 0.4797, cy: 0.4514, bezelR: 0.2354, dialR: 0.1931 },
+  // jubilee photo 799x1019: insert circle center (404.1, 457.4), outer r = 192.9
+  jubilee: { cx: 0.5057, cy: 0.4489, bezelR: 0.2414, dialR: 0.198 },
 };
+
+/** Cache of white-background-removed photos, keyed by the source image. */
+const keyedCache = new WeakMap<HTMLImageElement, HTMLCanvasElement>();
+
+/** Knock the white studio background out of a photo so a grey backdrop shows through. */
+function keyOutWhite(photo: HTMLImageElement): HTMLCanvasElement {
+  const cached = keyedCache.get(photo);
+  if (cached) return cached;
+
+  const w = photo.naturalWidth || photo.width;
+  const h = photo.naturalHeight || photo.height;
+  const off = document.createElement("canvas");
+  off.width = w;
+  off.height = h;
+  const octx = off.getContext("2d", { willReadFrequently: true });
+  if (!octx) return off;
+  octx.drawImage(photo, 0, 0, w, h);
+
+  const img = octx.getImageData(0, 0, w, h);
+  const d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i];
+    const g = d[i + 1];
+    const b = d[i + 2];
+    const min = Math.min(r, g, b);
+    const max = Math.max(r, g, b);
+    // Only pure, unsaturated near-white pixels count as background.
+    if (max - min > 12) continue;
+    if (min >= 249) {
+      d[i + 3] = 0;
+    } else if (min >= 238) {
+      d[i + 3] = Math.round(((249 - min) / 11) * 255);
+    }
+  }
+  octx.putImageData(img, 0, 0);
+  keyedCache.set(photo, off);
+  return off;
+}
 
 /** Composite the rendered dial + chosen bezel insert onto a real watch photo. */
 export function drawWatch(
