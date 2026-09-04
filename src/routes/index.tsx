@@ -27,7 +27,7 @@ import bezelPepsi from "@/assets/bezel-pepsi.png.asset.json";
 import bezelBlue from "@/assets/bezel-blue.png.asset.json";
 import bezelHulk from "@/assets/bezel-hulk.png.asset.json";
 import bezelGhost from "@/assets/bezel-ghost.png.asset.json";
-import bezelSteel from "@/assets/bezel-steel.png.asset.json";
+
 import bezelWhite from "@/assets/bezel-white.png.asset.json";
 
 /** `inner` = radius of the PNG's centre hole / half its width (measured per file). */
@@ -39,8 +39,7 @@ const BEZELS = [
   { name: "Pepsi", url: bezelPepsi.url, inner: 0.8112 },
   { name: "Coke", url: bezelCoke.url, inner: 0.8112 },
   { name: "Smurf (blå)", url: bezelBlue.url, inner: 0.8104 },
-  { name: "Ghost", url: bezelGhost.url, inner: 0.7957 },
-  { name: "Stål", url: bezelSteel.url, inner: 0.8272 },
+  { name: "Steel", url: bezelGhost.url, inner: 0.7957 },
   { name: "Hvit keramikk", url: bezelWhite.url, inner: 0.803 },
 ];
 
