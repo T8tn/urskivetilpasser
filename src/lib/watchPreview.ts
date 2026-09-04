@@ -92,12 +92,9 @@ export function drawWatch(
   ctx.fillRect(0, 0, w, h);
   if (!photo) return;
 
-  // The source photos have a white studio background — key it out so the
-  // grey backdrop shows through around the case and bracelet.
-  ctx.save();
-  ctx.globalCompositeOperation = "multiply";
-  ctx.drawImage(photo, 0, 0, w, h);
-  ctx.restore();
+  // The source photos have a white studio background — cut it away so the grey
+  // backdrop shows around the case, while the watch itself keeps its own colours.
+  ctx.drawImage(keyOutWhite(photo), 0, 0, w, h);
 
   const cx = g.cx * w;
   const cy = g.cy * h;
