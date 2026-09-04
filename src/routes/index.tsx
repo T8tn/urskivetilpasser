@@ -418,7 +418,7 @@ function Configurator() {
                 >
                   <ChevronLeft className="size-4" />
                 </Button>
-                <span className="text-sm font-medium">{bezel.name} bezel</span>
+                <span className="text-sm font-medium">{bezel.name === "Steel" ? "Black" : `${bezel.name} bezel`}</span>
                 <Button
                   type="button"
                   variant="ghost"
