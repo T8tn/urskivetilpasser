@@ -39,7 +39,7 @@ const BEZELS = [
   { name: "Pepsi", url: bezelPepsi.url, inner: 0.8112 },
   { name: "Coke", url: bezelCoke.url, inner: 0.8112 },
   { name: "Smurf (blå)", url: bezelBlue.url, inner: 0.8104 },
-  { name: "Steel Bezel", url: bezelGhost.url, inner: 0.7957 },
+  { name: "Steel", url: bezelGhost.url, inner: 0.7957 },
   { name: "Hvit keramikk", url: bezelWhite.url, inner: 0.803 },
 ];
 
