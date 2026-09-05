@@ -119,6 +119,16 @@ export function drawWatch(
     const inner = opts.bezelInnerRatio ?? 0.811;
     const rOuter = rDial / inner;
     ctx.save();
+
+    // Cover the bezel printed in the source watch photo first. Without this
+    // opaque annulus, tiny transparent/anti-aliased areas in replacement PNGs
+    // let the original insert show through and make it look like two bezels.
+    ctx.beginPath();
+    ctx.arc(cx, cy, rBezel, 0, Math.PI * 2);
+    ctx.arc(cx, cy, rDial * 0.992, 0, Math.PI * 2, true);
+    ctx.fillStyle = "#080808";
+    ctx.fill("evenodd");
+
     ctx.beginPath();
     ctx.arc(cx, cy, rBezel, 0, Math.PI * 2);
     ctx.clip();
