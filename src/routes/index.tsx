@@ -20,7 +20,6 @@ import handsAsset from "@/assets/hands.png.asset.json";
 import watchOysterAsset from "@/assets/watch-oyster.webp.asset.json";
 import watchJubileeAsset from "@/assets/watch-jubilee.webp.asset.json";
 import bezelBlack from "@/assets/bezel-black.png.asset.json";
-import bezelSubBlack from "@/assets/bezel-sub-black.png";
 import bezelBatman from "@/assets/bezel-batman.png.asset.json";
 import bezelSprite from "@/assets/bezel-sprite.png.asset.json";
 import bezelCoke from "@/assets/bezel-coke.png.asset.json";
@@ -33,7 +32,8 @@ import bezelWhite from "@/assets/bezel-white.png.asset.json";
 
 /** `inner` = radius of the PNG's centre hole / half its width (measured per file). */
 const BEZELS = [
-  { name: "Submariner sort", url: bezelSubBlack, inner: 0.778 },
+  // The watch photos already contain the correctly fitted Submariner insert.
+  { name: "Submariner sort", url: null, inner: 0.8112 },
   { name: "Sort", url: bezelBlack.url, inner: 0.8112 },
   { name: "Batman", url: bezelBatman.url, inner: 0.8112 },
   { name: "Sprite", url: bezelSprite.url, inner: 0.8114 },
@@ -163,11 +163,12 @@ function Configurator() {
         watchPhotoRefs.current[b.key] = img;
       }),
     );
-    BEZELS.forEach((b) =>
+    BEZELS.forEach((b) => {
+      if (!b.url) return;
       load(b.url, (img) => {
         bezelRefs.current[b.name] = img;
-      }),
-    );
+      });
+    });
   }, []);
 
   useEffect(() => {
