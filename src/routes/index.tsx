@@ -33,7 +33,7 @@ import bezelWhite from "@/assets/bezel-white.png.asset.json";
 
 /** `inner` = radius of the PNG's centre hole / half its width (measured per file). */
 const BEZELS = [
-  { name: "Submariner sort", url: bezelSubBlack, inner: 0.79 },
+  { name: "Submariner sort", url: bezelSubBlack, inner: 0.778 },
   { name: "Sort", url: bezelBlack.url, inner: 0.8112 },
   { name: "Batman", url: bezelBatman.url, inner: 0.8112 },
   { name: "Sprite", url: bezelSprite.url, inner: 0.8114 },
