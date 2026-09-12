@@ -1,11 +1,11 @@
 {
-  "version": 1,
-  "asset_id": "eb4b5959-1242-45b1-a1f3-e3f359944254",
-  "project_id": "87f12424-0428-419c-b73b-1113eb36debd",
-  "url": "/__l5e/assets-v1/eb4b5959-1242-45b1-a1f3-e3f359944254/bezel-hulk.png",
-  "r2_key": "a/v1/87f12424-0428-419c-b73b-1113eb36debd/eb4b5959-1242-45b1-a1f3-e3f359944254/bezel-hulk.png",
-  "original_filename": "bezel-hulk.png",
-  "size": 571775,
-  "content_type": "image/png",
-  "created_at": "2026-09-01T14:58:00Z"
+    "version":  1,
+    "asset_id":  "eb4b5959-1242-45b1-a1f3-e3f359944254",
+    "project_id":  "87f12424-0428-419c-b73b-1113eb36debd",
+    "url":  "/assets/bezel-hulk.svg",
+    "r2_key":  "a/v1/87f12424-0428-419c-b73b-1113eb36debd/eb4b5959-1242-45b1-a1f3-e3f359944254/bezel-hulk.png",
+    "original_filename":  "bezel-hulk.png",
+    "size":  571775,
+    "content_type":  "image/png",
+    "created_at":  "2026-09-01T14:58:00Z"
 }
