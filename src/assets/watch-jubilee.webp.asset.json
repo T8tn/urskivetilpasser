@@ -1,11 +1,11 @@
 {
-    "version":  1,
-    "asset_id":  "7dc9e412-9c36-4bd2-9b4e-715427db4dd0",
-    "project_id":  "87f12424-0428-419c-b73b-1113eb36debd",
-    "url":  "/assets/watch-jubilee.svg",
-    "r2_key":  "a/v1/87f12424-0428-419c-b73b-1113eb36debd/7dc9e412-9c36-4bd2-9b4e-715427db4dd0/watch-jubilee.webp",
-    "original_filename":  "watch-jubilee.webp",
-    "size":  32214,
-    "content_type":  "image/webp",
-    "created_at":  "2026-08-10T09:18:27Z"
+  "version": 1,
+  "asset_id": "7dc9e412-9c36-4bd2-9b4e-715427db4dd0",
+  "project_id": "87f12424-0428-419c-b73b-1113eb36debd",
+  "url": "/__l5e/assets-v1/7dc9e412-9c36-4bd2-9b4e-715427db4dd0/watch-jubilee.webp",
+  "r2_key": "a/v1/87f12424-0428-419c-b73b-1113eb36debd/7dc9e412-9c36-4bd2-9b4e-715427db4dd0/watch-jubilee.webp",
+  "original_filename": "watch-jubilee.webp",
+  "size": 32214,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T09:18:27Z"
 }

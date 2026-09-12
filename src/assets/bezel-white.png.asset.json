@@ -1,11 +1,11 @@
 {
-    "version":  1,
-    "asset_id":  "a78d4cad-57e9-4263-89d3-b685b8fdb10f",
-    "project_id":  "87f12424-0428-419c-b73b-1113eb36debd",
-    "url":  "/assets/bezel-white.svg",
-    "r2_key":  "a/v1/87f12424-0428-419c-b73b-1113eb36debd/a78d4cad-57e9-4263-89d3-b685b8fdb10f/bezel-white.png",
-    "original_filename":  "bezel-white.png",
-    "size":  304272,
-    "content_type":  "image/png",
-    "created_at":  "2026-09-01T14:58:12Z"
+  "version": 1,
+  "asset_id": "a78d4cad-57e9-4263-89d3-b685b8fdb10f",
+  "project_id": "87f12424-0428-419c-b73b-1113eb36debd",
+  "url": "/__l5e/assets-v1/a78d4cad-57e9-4263-89d3-b685b8fdb10f/bezel-white.png",
+  "r2_key": "a/v1/87f12424-0428-419c-b73b-1113eb36debd/a78d4cad-57e9-4263-89d3-b685b8fdb10f/bezel-white.png",
+  "original_filename": "bezel-white.png",
+  "size": 304272,
+  "content_type": "image/png",
+  "created_at": "2026-09-01T14:58:12Z"
 }
